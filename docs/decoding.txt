@@ -1,0 +1,30 @@
+Given a sequence of encoded numbers, the encoding base, and the amount of numbers to decode to
+(seq, base, N)
+
+Decode the `seq` to a binary string
+De-interleave the binary sequence to N groups
+
+Convert those binary groups to digits as desired
+
+# De-Interleaving:
+
+`de-interleaving` is the process of un-mixing the bits to their correct
+grouping
+
+For example, say we have the bit sequence 010111000101 that we want to
+separate into 3 groups, we do as follows
+
+BIT SEQUENCE:   0 1 0 1 1 1 0 0 0 1 0 1
+                ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^
+GROUP#:         3 2 1 3 2 1 3 2 1 3 2 1
+
+(Remember is little-endian, so read right to left!)
+
+So that group 1 is:
+1010
+
+Group 2:
+0011
+
+Group 3:
+1010
