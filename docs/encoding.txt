@@ -1,0 +1,94 @@
+Given N numbers and a base to encode to
+
+Convert all the numbers to their binary representation
+interleave the bits to one complete bit sequence
+Group this bit sequence into bytes, and encode these bytes using the
+given base
+
+return the character sequence
+
+# Interleaving:
+
+`interleaving` is the process of mixing the bits together in the
+correct sequence so that the z-order curve sequencing is achieved
+
+Assume given 4 numbers:
+10  -> 01010
+8   -> 01000
+31  -> 11111
+15  -> 01111
+
+Easiest to illustrate using tables:
+Show these binaries columnated
+
++----+----+----+----+
+| 10 | 8  | 31 | 15 |
++====+====+====+====+
+| 0  | 0  | 1  | 1  |
++----+----+----+----+
+| 1  | 0  | 1  | 1  |
++----+----+----+----+
+| 0  | 0  | 1  | 1  |
++----+----+----+----+
+| 1  | 1  | 1  | 1  |
++----+----+----+----+
+| 0  | 0  | 1  | 0  |
++----+----+----+----+
+
+Then combine the bits row by row 
+
++----+----+----+----+
+| 10 | 8  | 31 | 15 |
++====+====+====+====+
+| 0  | 0  | 1  | 1  | => 0011
++----+----+----+----+
+| 1  | 0  | 1  | 1  | => 1011
++----+----+----+----+
+| 0  | 0  | 1  | 1  | => 0011
++----+----+----+----+
+| 1  | 1  | 1  | 1  | => 1111
++----+----+----+----+
+| 0  | 0  | 1  | 0  | => 0010
++----+----+----+----+
+
+Combine to a complete bit sequence:
+
+0011-1011-0011-1111-0010
+
+Group this bit sequence to chunks encodable by the base
+E.g:    base64 can encode in group of 6 bits (log2(64) = 6)
+        base32 can encode in groups of 5 bits (log2(32) = 5)
+
+So for example if encoding in base64:
+0011-1011-0011-1111-0010
+-> 001110-110011-111100-10
+The trailing group of 10 will be padded out with null '0' bits
+10 => 000010 (little endian)
+
+So the final sequence is:
+001110-110011-111100-000010
+Which using base64 gives 
+(https://en.wikipedia.org/wiki/Base64#Base64_table_from_RFC_4648)
+
+Oz8C
+
+# Advantages:
+
+The power of z-order curve encoding arises when it is used to encode
+bit sequences that are trunkatable
+
+For example, if we represent a binary search between a range 0 & M
+in binary, where 0 indicates the true value is betwen 0 & m (= M / 2)
+and 1 indicates it is between m & M
+
+Then the number of bits given represent the depth of the search.
+For a given group of search results, interleaved together encoded
+using an encoding base that corresponds to the number of sequences
+
+e.g: Use base16 for 4 groups, base32 for 5 groups, etc... (2^N, N=# groups)
+
+Then each interleaved and encoded character in the sequence is a search
+depth.
+
+If we truncate the final encoded sequence to L characters, then we are
+truncating the binary search to L iterations
