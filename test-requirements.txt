@@ -67,7 +67,7 @@ pytest-cov==5.0.0
     # via -r test-requirements.in
 pytest-flake8==1.2.2
     # via -r test-requirements.in
-tox==4.23.1
+tox==4.23.2
     # via -r test-requirements.in
 typing-extensions==4.12.2
     # via mypy
