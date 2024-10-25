@@ -19,28 +19,46 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
-import pytest
+import base64
+from typing import List
 
-import encode
-
-
-def test_base64encode():
-    # See example in docs
-
-    to_encode = [10, 8, 31, 15]
-
-    encoded = encode.base64encode(to_encode)
-    expected = "A7Py"
-
-    assert expected == encoded
+import uninterleave
 
 
-def test_base32encode():
-    # See example in docs
+def base64decode(code: str, ngroups=None) -> List[int]:
 
-    to_encode = [10, 8, 31, 15]
+    byte_seq = base64.b64decode(code)
 
-    encoded = encode.base32encode(to_encode)
-    expected = "HM7S"
+    bit_seq = int.from_bytes(byte_seq)
 
-    assert expected == encoded
+    # if not overwritten, assume splitting the encoded string into the
+    # number of chars in that string
+    if ngroups is None:
+        ngroups = len(code)
+
+    decoded = uninterleave.uninterleave(bit_seq, ngroups)
+
+    return decoded[::-1]
+
+
+def base32decode(code: str, ngroups=None) -> List[int]:
+
+    # Need to pad out code to multiple of 8 chars if is trimmed
+    nchars = len(code)
+    excess_chars = nchars % 8
+    if excess_chars:
+        padding_chars = "A" * (8 - excess_chars)
+        code = padding_chars + code
+
+    byte_seq = base64.b32decode(code)
+
+    bit_seq = int.from_bytes(byte_seq)
+
+    # if not overwritten, assume splitting the encoded string into the
+    # number of chars in that string
+    if ngroups is None:
+        ngroups = nchars
+
+    decoded = uninterleave.uninterleave(bit_seq, ngroups)
+
+    return decoded[::-1]

@@ -21,26 +21,26 @@
 # SOFTWARE.
 import pytest
 
-import encode
+import decode
 
 
-def test_base64encode():
-    # See example in docs
+def test_base64decode():
 
-    to_encode = [10, 8, 31, 15]
+    # see test_encode.py & decoding.txt
+    code = "A7Py"
+    expected = [10, 8, 31, 15]
 
-    encoded = encode.base64encode(to_encode)
-    expected = "A7Py"
+    decoded = decode.base64decode(code)
 
-    assert expected == encoded
+    assert decoded == expected
 
 
-def test_base32encode():
-    # See example in docs
+def test_base32decode():
 
-    to_encode = [10, 8, 31, 15]
+    # see test_encode.py & decoding.txt
+    code = "HM7S"
+    expected = [10, 8, 31, 15]
 
-    encoded = encode.base32encode(to_encode)
-    expected = "HM7S"
+    decoded = decode.base32decode(code)
 
-    assert expected == encoded
+    assert decoded == expected
