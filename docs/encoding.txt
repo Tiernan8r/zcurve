@@ -61,16 +61,28 @@ E.g:    base64 can encode in group of 6 bits (log2(64) = 6)
 
 So for example if encoding in base64:
 0011-1011-0011-1111-0010
--> 001110-110011-111100-10
+-> 00-111011-001111-110010
 The trailing group of 10 will be padded out with null '0' bits
-10 => 000010 (little endian)
+00 => 000000 (little endian)
 
 So the final sequence is:
-001110-110011-111100-000010
+000000-111011-001111-110010
 Which using base64 gives 
-(https://en.wikipedia.org/wiki/Base64#Base64_table_from_RFC_4648)
+(https://datatracker.ietf.org/doc/html/rfc4648.html#section-4)
 
-Oz8C
+A7Py
+
+=======================================================================
+
+Or in Base32:
+Which encodes in groups of 5 bits:
+0011-1011-0011-1111-0010
+Becomes:
+00111-01100-11111-10010
+
+Which is (using https://datatracker.ietf.org/doc/html/rfc4648.html#section-6):
+
+HM7S
 
 # Advantages:
 
