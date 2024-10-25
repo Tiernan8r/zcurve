@@ -31,7 +31,7 @@ def main():
 
     parser = argparse.ArgumentParser(
         prog="zcurve",
-        description="Encode/Decode an integer sequence using z-order curve encoding",
+        description="Encode/Decode an integer sequence using z-order curve encoding",  # noqa: E501
     )
 
     parser.add_argument(
@@ -48,7 +48,9 @@ def main():
         default="base64",
     )
 
-    decode_group = parser.add_argument_group("Decode", "Decode specific options")
+    decode_group = parser.add_argument_group(
+        "Decode", "Decode specific options"
+    )  # noqa: E501
 
     decode_group.add_argument(
         "-n", "--ngroups", type=int, help="number of integers to decode to"
@@ -78,7 +80,9 @@ def wrangle_args(args):
 def handle_encoding(sequence: List[str], base: Base) -> str:
     # Verify all input as wrangleable to int
     if not _check_integers(sequence):
-        print(f"Input of '{sequence}' is not all parsable to integer, try again")
+        print(
+            f"Input of '{sequence}' is not all parsable to integer, try again"
+        )  # noqa: E501
         sys.exit(1)
 
     int_seq = [int(seq) for seq in sequence]
