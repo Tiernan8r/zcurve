@@ -32,9 +32,10 @@ def test_interleave():
 
     expected = 0b010111000101
 
-    actual = interleave.interleave(given)
+    actual, nbits = interleave.interleave(given)
 
     assert expected == actual
+    assert nbits == 12
 
 
 
@@ -44,6 +45,7 @@ def test_interleave_log2_on_0_handled_correctly():
 
     expected = 0
 
-    actual = interleave.interleave(given)
+    actual, nbits = interleave.interleave(given)
 
     assert expected == actual
+    assert nbits == 2
