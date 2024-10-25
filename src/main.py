@@ -105,6 +105,9 @@ def handle_decoding(sequence: List[str], base: Base, ngroups: int) -> List[int]:
     if ngroups is None:
         ngroups = [len(seq) for seq in sequence]
 
+    if type(ngroups) is int:
+        ngroups = [ngroups for i in sequence]
+
     encoding_func = base.decoding_func()
 
     for seq, ngroup in zip(sequence, ngroups):
