@@ -22,7 +22,7 @@
 # SOFTWARE.
 import argparse
 import sys
-from typing import List
+from typing import Iterable, List
 
 from base import Base
 
@@ -104,13 +104,15 @@ def _check_integers(seq: List[str]) -> bool:
     return True
 
 
-def handle_decoding(sequence: List[str], base: Base, ngroups: int) -> List[int]:
+def handle_decoding(
+    sequence: List[str], base: Base, ngroups: Iterable[int]
+) -> List[int]:
 
     if ngroups is None:
-        ngroups = [len(seq) for seq in sequence]
+        ngroups: List[int] = [len(seq) for seq in sequence]
 
     if type(ngroups) is int:
-        ngroups = [ngroups for i in sequence]
+        ngroups: List[int] = [ngroups for i in sequence]
 
     encoding_func = base.decoding_func()
 
