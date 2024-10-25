@@ -20,6 +20,8 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 import base64
+import binascii
+import sys
 from typing import List
 
 import uninterleave
@@ -27,7 +29,11 @@ import uninterleave
 
 def base64decode(code: str, ngroups=None) -> List[int]:
 
-    byte_seq = base64.b64decode(code)
+    try:
+        byte_seq = base64.b64decode(code)
+    except binascii.Error as e:
+        print(e)
+        sys.exit(1)
 
     bit_seq = int.from_bytes(byte_seq)
 
@@ -50,7 +56,11 @@ def base32decode(code: str, ngroups=None) -> List[int]:
         padding_chars = "A" * (8 - excess_chars)
         code = padding_chars + code
 
-    byte_seq = base64.b32decode(code)
+    try:
+        byte_seq = base64.b32decode(code)
+    except binascii.Error as e:
+        print(e)
+        sys.exit(1)
 
     bit_seq = int.from_bytes(byte_seq)
 
