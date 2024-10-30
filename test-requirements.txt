@@ -63,7 +63,7 @@ pytest==8.3.3
     #   -r test-requirements.in
     #   pytest-cov
     #   pytest-flake8
-pytest-cov==5.0.0
+pytest-cov==6.0.0
     # via -r test-requirements.in
 pytest-flake8==1.2.2
     # via -r test-requirements.in
