@@ -29,6 +29,16 @@ from base import Base
 
 def main():
 
+    parser = setup_parser()
+
+    args = parser.parse_args()
+
+    out = wrangle_args(args)
+    print(out)
+
+
+def setup_parser() -> argparse.ArgumentParser:
+
     parser = argparse.ArgumentParser(
         prog="zcurve",
         description="Encode/Decode an integer sequence using z-order curve encoding",  # noqa: E501
@@ -57,10 +67,7 @@ def main():
     )
     parser.add_argument("input", nargs="*", help="data to encode/decode")
 
-    args = parser.parse_args()
-
-    out = wrangle_args(args)
-    print(out)
+    return parser
 
 
 def wrangle_args(args):
