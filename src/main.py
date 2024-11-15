@@ -22,7 +22,7 @@
 # SOFTWARE.
 import argparse
 import sys
-from typing import Iterable, List
+from typing import Iterable, List, Union
 
 import binary
 from base import Base
@@ -103,7 +103,7 @@ def setup_parser() -> argparse.ArgumentParser:
     return parser
 
 
-def wrangle_args(args):
+def wrangle_args(args) -> str | List[int]:
 
     base: Base = Base.from_str(args.base)
 
@@ -141,8 +141,8 @@ def handle_encoding(
     base: Base,
     do_binary: bool,
     bs_depth: int,
-    bs_min: float = None,
-    bs_max: float = None,
+    bs_min: float | None,
+    bs_max: float | None,
 ) -> str:
     # Verify all input as wrangleable to int
     if not _check_integers(sequence):
@@ -189,7 +189,7 @@ def _check_integers(seq: List[str]) -> bool:
 def handle_decoding(
     sequence: List[str],
     base: Base,
-    ngroups: Iterable[int],
+    ngroups: Iterable[int] | None,
     do_binary: bool,
     bs_min: float,
     bs_max: float,
@@ -199,7 +199,7 @@ def handle_decoding(
         ngroups: List[int] = [len(seq) for seq in sequence]
 
     if type(ngroups) is int:
-        ngroups: List[int] = [ngroups for i in sequence]
+        ngroups = [ngroups] * len(sequence)
 
     decoding_func = base.decoding_func()
 

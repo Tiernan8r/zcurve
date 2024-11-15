@@ -24,8 +24,8 @@ from typing import List, Tuple
 
 
 def binary_search(
-    int_seq: List[int], depth, low: float = None, high: float = None
-) -> Tuple[List[int], int, int]:
+    int_seq: List[int], depth, low: float | None, high: float | None
+) -> Tuple[List[int], float, float]:
     if low is None:
         low = min(int_seq)
     if high is None:
@@ -64,12 +64,12 @@ def binary_search(
 
 def binary_unsearch(
     binary_sequence: List[int], low: float, high: float
-) -> List[int]:  # noqa: E501
+) -> List[float]:  # noqa: E501
 
     if isinstance(binary_sequence, int):
         binary_sequence = [binary_sequence]
     N = len(binary_sequence)
-    sequences = [0] * N
+    sequences: List[float] = [0] * N
     lows = [low] * N
     highs = [high] * N
 
