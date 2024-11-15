@@ -121,3 +121,18 @@ def test_main_binary_search_base64encode(mocker, capsys):
     assert captured.out == "AQ==\n"
 
 
+def test_main_binary_search_base64decode(mocker, capsys):
+
+    mocked_argparse = MockedArgParse()
+    mocked_argparse.decode = True
+    mocked_argparse.binary_search = True
+    mocked_argparse.low = 0
+    mocked_argparse.high = 10
+    mocked_argparse.input = ["AQ=="]
+
+    mock_setup_parser(mocker, mocked_argparse)
+
+    main.main()
+
+    captured = capsys.readouterr()
+    assert captured.out == "[5]\n"
