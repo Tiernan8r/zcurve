@@ -46,3 +46,61 @@ def mock_setup_parser(mocker, desired_mocked_argparse):
     mocker.patch("main.setup_parser", mocked)
 
 
+def test_main_base64encode(mocker, capsys):
+
+    mocked_argparse = MockedArgParse()
+    mocked_argparse.input = ["123456789"]
+
+    mock_setup_parser(mocker, mocked_argparse)
+
+    main.main()
+
+    captured = capsys.readouterr()
+    assert captured.out == "BUWe1w==\n"
+
+
+def test_main_base32encode(mocker, capsys):
+
+    mocked_argparse = MockedArgParse()
+    mocked_argparse.input = ["123456789"]
+    mocked_argparse.base = "base32"
+
+    mock_setup_parser(mocker, mocked_argparse)
+
+    main.main()
+
+    captured = capsys.readouterr()
+    assert captured.out == "CULHWX\n"
+
+
+def test_main_base64decode(mocker, capsys):
+
+    mocked_argparse = MockedArgParse()
+    mocked_argparse.decode = True
+    mocked_argparse.ngroups = 4
+    mocked_argparse.input = ["Cm5IBSw6gl+5pM5ISIg="]
+
+    mock_setup_parser(mocker, mocked_argparse)
+
+    main.main()
+
+    captured = capsys.readouterr()
+    assert captured.out == "[123456789, 12345678, 1234567, 123456]\n"
+
+
+def test_main_base32decode(mocker, capsys):
+
+    mocked_argparse = MockedArgParse()
+    mocked_argparse.decode = True
+    mocked_argparse.ngroups = 4
+    mocked_argparse.base = "base32"
+    mocked_argparse.input = ["FG4SAFFQ5IEX5ZUTHEQSEI"]
+
+    mock_setup_parser(mocker, mocked_argparse)
+
+    main.main()
+
+    captured = capsys.readouterr()
+    assert captured.out == "[123456789, 12345678, 1234567, 123456]\n"
+
+
