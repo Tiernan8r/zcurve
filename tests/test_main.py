@@ -21,8 +21,6 @@
 # SOFTWARE.
 from typing import List
 
-import pytest
-
 import main
 
 

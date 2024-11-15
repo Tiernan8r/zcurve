@@ -49,7 +49,9 @@ def test_binary_search_simple():
     low = 0
     high = 10
 
-    binary_sequence, llow, hhigh = binary.binary_search(sequences, depth, low, high)
+    binary_sequence, llow, hhigh = binary.binary_search(
+        sequences, depth, low, high
+    )  # noqa: E501
     assert llow == 0
     assert hhigh == 10
 
@@ -108,4 +110,3 @@ def test_binary_unsearch():
     actual_seq = binary.binary_unsearch(binary_seq, low, high)
 
     assert actual_seq == expected_seq
-

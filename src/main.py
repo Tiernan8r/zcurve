@@ -81,14 +81,14 @@ def setup_parser() -> argparse.ArgumentParser:
         "-g",
         "--high",
         type=float,
-        help="The maximum value in the search range, can be inferred for encoding, but is required for decoding",
+        help="The maximum value in the search range, can be inferred for encoding, but is required for decoding",  # noqa:E501
     )
 
     binary_search_group.add_argument(
         "-l",
         "--low",
         type=float,
-        help="The minimum value in the search range, can be inferred for encoding, but is required for decoding",
+        help="The minimum value in the search range, can be inferred for encoding, but is required for decoding",  # noqa:E501
     )
 
     decode_group = parser.add_argument_group(
@@ -156,11 +156,13 @@ def handle_encoding(
     if do_binary:
         if bs_depth is None:
             print(
-                "When performing a binary search encoding, the search depth is required"
+                "When performing a binary search encoding, the search depth is required"  # noqa:E501
             )
             sys.exit(1)
 
-        seq, automin, automax = binary.binary_search(seq, bs_depth, bs_min, bs_max)
+        seq, automin, automax = binary.binary_search(
+            seq, bs_depth, bs_min, bs_max
+        )  # noqa:E501
 
         if bs_min is None:
             print(f"Minimum search value auto-set to {automin}")
@@ -207,12 +209,12 @@ def handle_decoding(
     if do_binary:
         if bs_min is None:
             print(
-                "When performing a binary search decoding, a search minimum is required (-l)"
+                "When performing a binary search decoding, a search minimum is required (-l)"  # noqa:E501
             )
             sys.exit(1)
         if bs_max is None:
             print(
-                "When performing a binary search decoding, a search maximum is required (-g)"
+                "When performing a binary search decoding, a search maximum is required (-g)"  # noqa:E501
             )
             sys.exit(1)
 

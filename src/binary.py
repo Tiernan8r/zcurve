@@ -44,16 +44,16 @@ def binary_search(
             if skips[j]:
                 continue
 
-            v = int_seq[j]
-            h = highs[j]
-            l = lows[j]
+            seq_val = int_seq[j]
+            hhigh = highs[j]
+            llow = lows[j]
 
-            mid = (h - l) / 2 + l
+            mid = (hhigh - llow) / 2 + llow
 
-            if v == mid:
+            if seq_val == mid:
                 bin_seq[j] = bin_seq[j] | (1 << i)
                 skips[j] = True
-            elif v > mid:
+            elif seq_val > mid:
                 bin_seq[j] = bin_seq[j] | (1 << i)
                 lows[j] = mid
             else:
@@ -62,7 +62,9 @@ def binary_search(
     return bin_seq, low, high
 
 
-def binary_unsearch(binary_sequence: List[int], low: float, high: float) -> List[int]:
+def binary_unsearch(
+    binary_sequence: List[int], low: float, high: float
+) -> List[int]:  # noqa: E501
 
     if isinstance(binary_sequence, int):
         binary_sequence = [binary_sequence]
@@ -73,7 +75,9 @@ def binary_unsearch(binary_sequence: List[int], low: float, high: float) -> List
 
     # maxval = 2^nbits - 1
     # => nbits = log2(maxval + 1)
-    depths = [math.ceil(math.log2(b + 1)) if b != 0 else 0 for b in binary_sequence]
+    depths = [
+        math.ceil(math.log2(b + 1)) if b != 0 else 0 for b in binary_sequence
+    ]  # noqa: E501
     max_depth = max(depths)
 
     mask = 1
@@ -83,9 +87,9 @@ def binary_unsearch(binary_sequence: List[int], low: float, high: float) -> List
             extracted_bit = binary_sequence[j] & mask
             binary_sequence[j] = binary_sequence[j] >> 1
 
-            h = highs[j]
-            l = lows[j]
-            mid = (h - l) / 2 + l
+            hhigh = highs[j]
+            llow = lows[j]
+            mid = (hhigh - llow) / 2 + llow
 
             if extracted_bit:
                 sequences[j] = mid
