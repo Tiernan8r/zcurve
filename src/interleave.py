@@ -27,7 +27,7 @@ def interleave(nums: List[int]) -> Tuple[int, int]:
 
     res = 0
     ngroups = len(nums)
-    nbits = [math.ceil(math.log2(i)) if i > 0 else 1 for i in nums]
+    nbits = [math.ceil(math.log2(i)) if i > 1 else 1 for i in nums]
     max_nbits = max(nbits)
 
     for i in range(max_nbits):
