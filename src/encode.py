@@ -29,6 +29,8 @@ import interleave
 def base64encode(sequence: List[int]) -> str:
     interleaved, nbits_interleaved = interleave.interleave(sequence)
 
+    ## TODO: handle padding behaviour as outlined in RFC4648...
+
     # 8 bits in a byte
     nbytes_interleaved = math.ceil(nbits_interleaved / 8)
 

@@ -37,5 +37,4 @@ def uninterleave(bit_sequence, ngroups) -> List[int]:
 
         res[i] = (res[i] << 1) | curbit
 
-
     return res

@@ -46,11 +46,17 @@ class Base(enum.Enum):
         return options.get(s.lower(), Base.BASE64)
 
     def decoding_func(self):
-        options = {Base.BASE64: decode.base64decode, Base.BASE32: decode.base32decode}
+        options = {
+            Base.BASE64: decode.base64decode,
+            Base.BASE32: decode.base32decode,
+        }  # noqa: E501
 
         return options.get(self, decode.base64decode)
 
     def encoding_func(self):
-        options = {Base.BASE64: encode.base64encode, Base.BASE32: encode.base32encode}
+        options = {
+            Base.BASE64: encode.base64encode,
+            Base.BASE32: encode.base32encode,
+        }  # noqa: E501
 
         return options.get(self, encode.base64encode)

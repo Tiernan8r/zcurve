@@ -19,9 +19,25 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
-import pytest
-
 import encode
+
+
+def test_base64encode_zero():
+    to_encode = [0]
+
+    encoded = encode.base64encode(to_encode)
+    expected = "A"
+
+    assert expected == encoded
+
+
+def test_base64encode_one():
+    to_encode = [1]
+
+    encoded = encode.base64encode(to_encode)
+    expected = "B"
+
+    assert expected == encoded
 
 
 def test_base64encode():
