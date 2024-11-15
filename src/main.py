@@ -25,6 +25,7 @@ import sys
 from typing import Iterable, List
 
 from base import Base
+import binary
 
 
 def main():
@@ -58,6 +59,38 @@ def setup_parser() -> argparse.ArgumentParser:
         default="base64",
     )
 
+    binary_search_group = parser.add_argument_group(
+        "Binary Search", "Options for binary search encoding/decoding"
+    )
+
+    binary_search_group.add_argument(
+        "-bs",
+        "--binary-search",
+        action="store_true",
+        help="toggle using binary search encoding/decoding",
+    )
+
+    binary_search_group.add_argument(
+        "-dp",
+        "--depth",
+        type=int,
+        help="The binary search depth, required for binary search encoding",
+    )
+
+    binary_search_group.add_argument(
+        "-g",
+        "--high",
+        type=float,
+        help="The maximum value in the search range, can be inferred for encoding, but is required for decoding",
+    )
+
+    binary_search_group.add_argument(
+        "-l",
+        "--low",
+        type=float,
+        help="The minimum value in the search range, can be inferred for encoding, but is required for decoding",
+    )
+
     decode_group = parser.add_argument_group(
         "Decode", "Decode specific options"
     )  # noqa: E501
@@ -76,15 +109,22 @@ def wrangle_args(args):
 
     do_decode = args.decode
 
+    do_binary_search = args.binary_search
+    binary_search_depth = args.depth
+    binary_search_max = args.high
+    binary_search_min = args.low
+
     inp: List[str] = args.input
 
     if do_decode:
-        return handle_decoding(inp, base, args.ngroups)
+        return handle_decoding(inp, base, args.ngroups, do_binary_search, binary_search_min, binary_search_max)
 
-    return handle_encoding(inp, base)
+    return handle_encoding(inp, base, do_binary_search, binary_search_depth, binary_search_min, binary_search_max)
 
 
-def handle_encoding(sequence: List[str], base: Base) -> str:
+def handle_encoding(
+    sequence: List[str], base: Base, do_binary: bool, bs_depth: int, bs_min: float = None, bs_max: float = None
+) -> str:
     # Verify all input as wrangleable to int
     if not _check_integers(sequence):
         print(
@@ -92,11 +132,23 @@ def handle_encoding(sequence: List[str], base: Base) -> str:
         )  # noqa: E501
         sys.exit(1)
 
-    int_seq = [int(seq) for seq in sequence]
+    seq = [int(seq) for seq in sequence]
+
+    if do_binary:
+        if bs_depth is None:
+            print("When performing a binary search encoding, the search depth is required")
+            sys.exit(1)
+
+        seq, automin, automax = binary.binary_search(seq, bs_depth, bs_min, bs_max)
+
+        if bs_min is None:
+            print(f"Minimum search value auto-set to {automin}")
+        if bs_max is None:
+            print(f"Maximum search value auto-set to {automax}")
 
     encoding_func = base.encoding_func()
 
-    encoded = encoding_func(int_seq)
+    encoded = encoding_func(seq)
 
     return encoded
 
@@ -112,7 +164,7 @@ def _check_integers(seq: List[str]) -> bool:
 
 
 def handle_decoding(
-    sequence: List[str], base: Base, ngroups: Iterable[int]
+    sequence: List[str], base: Base, ngroups: Iterable[int], do_binary: bool, bs_min: float, bs_max: float
 ) -> List[int]:
 
     if ngroups is None:
@@ -121,12 +173,22 @@ def handle_decoding(
     if type(ngroups) is int:
         ngroups: List[int] = [ngroups for i in sequence]
 
-    encoding_func = base.decoding_func()
+    decoding_func = base.decoding_func()
 
     for seq, ngroup in zip(sequence, ngroups):
-        encoded_seq = encoding_func(seq, ngroups=ngroup)
+        decoded_seq = decoding_func(seq, ngroups=ngroup)
 
-    return encoded_seq
+    if do_binary:
+        if bs_min is None:
+            print("When performing a binary search decoding, a search minimum is required (-l)")
+            sys.exit(1)
+        if bs_max is None:
+            print("When performing a binary search decoding, a search maximum is required (-g)")
+            sys.exit(1)
+
+        decoded_seq = binary.binary_unsearch(decoded_seq, bs_min, bs_max)
+
+    return decoded_seq
 
 
 if __name__ == "__main__":
